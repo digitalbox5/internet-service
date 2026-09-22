@@ -238,7 +238,7 @@
             font-weight: 900;
         }
 
-        /* ===== VÍDEO (corte leve em cima e em baixo) ===== */
+        /* ===== VÍDEO (corte mínimo, quase original) ===== */
         .video-section {
             width: 100%;
             display: flex;
@@ -254,8 +254,8 @@
             overflow: hidden;
             box-shadow: 0 10px 36px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(200, 100, 255, 0.18);
             background: #150a20;
-            /* Corte LEVE: 16/9.5 em vez de 16/9 ou 16/8.5 */
-            aspect-ratio: 16 / 9.5;
+            /* Corte MÍNIMO: 16/9.2 → praticamente o original */
+            aspect-ratio: 16 / 9.2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -375,7 +375,7 @@
                 </p>
             </div>
 
-            <!-- VÍDEO / IMAGEM (corte leve) -->
+            <!-- VÍDEO / IMAGEM (corte mínimo) -->
             <div class="video-section reveal">
                 <div class="video-wrapper" id="videoWrapper">
                     <video id="heroVideo" muted playsinline webkit-playsinline poster="imagem1.png">
