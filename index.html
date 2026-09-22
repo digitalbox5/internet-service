@@ -238,7 +238,7 @@
             font-weight: 900;
         }
 
-        /* ===== VÍDEO (corte mínimo, quase original) ===== */
+        /* ===== VÍDEO (formato original, sem corte) ===== */
         .video-section {
             width: 100%;
             display: flex;
@@ -254,8 +254,6 @@
             overflow: hidden;
             box-shadow: 0 10px 36px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(200, 100, 255, 0.18);
             background: #150a20;
-            /* Corte MÍNIMO: 16/9.2 → praticamente o original */
-            aspect-ratio: 16 / 9.2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -264,10 +262,10 @@
         .video-wrapper video,
         .video-wrapper img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             display: block;
             background: #150a20;
+            object-fit: contain;
         }
 
         /* ===== BOTÃO SECUNDÁRIO ===== */
@@ -375,7 +373,7 @@
                 </p>
             </div>
 
-            <!-- VÍDEO / IMAGEM (corte mínimo) -->
+            <!-- VÍDEO / IMAGEM (formato original, sem corte) -->
             <div class="video-section reveal">
                 <div class="video-wrapper" id="videoWrapper">
                     <video id="heroVideo" muted playsinline webkit-playsinline poster="imagem1.png">
@@ -401,7 +399,6 @@
     <!-- ===== JAVASCRIPT ===== -->
     <script>
         (function() {
-            // ---- VÍDEO ÚNICO → depois imagem ----
             const heroVideo = document.getElementById('heroVideo');
             const videoSource = 'video1.mp4';
             const imagePoster = 'imagem1.png';
@@ -413,19 +410,28 @@
             }
 
             function onVideoEnd() {
+                // Esconde o vídeo e mostra a imagem no seu lugar
                 heroVideo.pause();
                 heroVideo.removeAttribute('src');
                 heroVideo.load();
-                heroVideo.poster = imagePoster;
-                heroVideo.style.background = `#150a20 url('${imagePoster}') center/cover no-repeat`;
-                heroVideo.style.objectFit = 'cover';
-                heroVideo.style.backgroundColor = '#150a20';
-                heroVideo.controls = false;
+
+                // Cria um elemento <img> para substituir o vídeo
+                const img = document.createElement('img');
+                img.src = imagePoster;
+                img.alt = 'Resultado da rodada';
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.display = 'block';
+                img.style.background = '#150a20';
+
+                // Substitui o vídeo pela imagem dentro do wrapper
+                const wrapper = document.getElementById('videoWrapper');
+                wrapper.innerHTML = '';
+                wrapper.appendChild(img);
             }
 
             function initVideo() {
                 heroVideo.poster = imagePoster;
-                heroVideo.style.background = 'transparent';
                 heroVideo.controls = false;
                 loadVideo();
                 heroVideo.addEventListener('ended', onVideoEnd);
@@ -435,7 +441,7 @@
                 loadVideo();
             });
 
-            // Observa visibilidade para pausar/continuar
+            // Pausa/retoma quando sai/entra na viewport
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
